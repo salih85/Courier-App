@@ -44,11 +44,19 @@ Courier-App/
 ├── package.json
 └── README.md
 
+
+---
+
+## 🔐 Environment Variables
+
+Create `.env` file inside project folder:
+
+DB_URL=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database-name>
+JWT_SECRET=<your_jwt_secret_key>
+
+---
+
 ## 📌 How to Run the Project
 
-Install all dependencies:
-
-```bash
-npm install
 
 
