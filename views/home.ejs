@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CourierPro - Home</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 10%;
+      background: linear-gradient(135deg, #007bff, #6610f2);
+      color: white;
+    }
+    .hero-text h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .track-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      max-width: 400px;
+      color: black;
+    }
+    .features {
+      padding: 60px 10%;
+      text-align: center;
+    }
+    .feature-item {
+      padding: 20px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      margin: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    footer {
+      background: #f8f9fa;
+      padding: 15px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('./partials/user-navbar') %>
+
+<section class="hero text-center">
+  <div class="hero-text">
+    <h1>Fast • Secure • Reliable</h1>
+    <p>Your trusted courier service worldwide</p>
+    <a href="send-parcel" class="btn btn-success">Send a percel</a>
+  </div>
+
+
+  <div class="track-box mt-4 mx-auto" id="track">
+    <h5 class="mb-3">Track Your Parcel</h5>
+    <form method="get" action="/track">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Enter Tracking Number" name="id" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Track Now</button>
+    </form>
+  </div>
+</section>
+
+
+<section class="features">
+  <h2 class="mb-5">Why Choose CourierPro?</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="feature-item">
+        🚚 <h5>Fast Delivery</h5>
+        <p>Guaranteed next-day delivery across major cities worldwide.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-item">
+        🔒 <h5>Secure Shipments</h5>
+        <p>All parcels are handled with the highest level of security.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-item">
+        📦 <h5>Real-Time Tracking</h5>
+        <p>Stay updated with real-time tracking of your parcel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  &copy; 2025 CourierPro. All rights reserved.
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

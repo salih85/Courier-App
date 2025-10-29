@@ -1,0 +1,51 @@
+
+    body, html {
+      height: 100%;
+      margin: 0;
+    }
+    .split-container {
+      height: 100vh;
+      display: flex;
+    }
+    .left-side {
+      flex: 3; /* 75% */
+      background: linear-gradient(135deg, #007bff, #6610f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      text-align: center;
+    }
+    .right-side {
+      flex: 1; /* 25% */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+    /* Logo Styling */
+    .logo {
+      font-size: 3rem;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .tagline {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }

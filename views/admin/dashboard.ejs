@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      color: white;
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .card-text {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Courier Admin</a>
+    <div class="ms-auto">
+      <a href="/admin/logout" class="btn btn-danger">Logout</a>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 sidebar">
+        <a href="#">Dashboard</a>
+        <a href="#">Parcels</a>
+        <a href="#">Users</a>
+        <a href="#">Settings</a>
+      </div>
+
+      <!-- Main content -->
+      <div class="col-md-9">
+        <h2>Welcome, Admin!</h2>
+
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Total Shipments</h5>
+                <p class="card-text"><%= parcels.length %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Delivered</h5>
+                <p class="card-text"><%= parcels.filter(p => p.CurrentStatus === 'Delivered').length %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+              <div class="card-body">
+                <h5 class="card-title">In Transit</h5>
+                <p class="card-text"><%= parcels.filter(p => p.CurrentStatus === 'In Transit').length %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Awaiting Pickup</h5>
+                <p class="card-text"><%= parcels.filter(p => p.CurrentStatus === 'Awaiting Pickup').length %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4>Latest Parcels</h4>
+        <table id="tbl" class="display table table-striped">
+          <thead>
+            <tr>
+              <th>Tracking ID</th>
+              <th>Sender</th>
+              <th>Receiver</th>
+              <th>Destination</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% parcels.forEach(p => { %>
+              <tr>
+                <td><%= p.id %></td>
+                <td><%= p.sender %></td>
+                <td><%= p.receiver %></td>
+                <td><%= p.to %></td>
+                <td>
+                  <% if (p.CurrentStatus === 'Awaiting Pickup') { %>
+                    <span class="badge bg-warning"><%= p.CurrentStatus %></span>
+                  <% } else if (p.CurrentStatus === 'Collected') { %>
+                    <span class="badge bg-info"><%= p.CurrentStatus %></span>
+                  <% } else if (p.CurrentStatus === 'In Transit') { %>
+                    <span class="badge bg-secondary"><%= p.CurrentStatus %></span>
+                  <% } else if (p.CurrentStatus === 'Delivered') { %>
+                    <span class="badge bg-success"><%= p.CurrentStatus %></span>
+                  <% } %>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    onclick="openModal('<%= p.id %>', '<%= p.sender %>', '<%= p.receiver %>', '<%= p.CurrentStatus %>', '<%= p.to %>')">
+                    Update Status
+                  </button>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Updating Parcel Status -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="parcelForm" method="post" action="/admin/update-parcel">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Parcel Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            <input type="hidden" name="parcelId" id="parcel-id">
+
+            <p><strong>Tracking ID:</strong> <span id="modal-id"></span></p>
+            <p><strong>Sender:</strong> <span id="modal-sender"></span></p>
+            <p><strong>Receiver:</strong> <span id="modal-receiver"></span></p>
+            <p><strong>Destination:</strong> <span id="modal-destination"></span></p>
+
+            <div class="mb-3">
+              <label for="parcel-status" class="form-label"><strong>Status</strong></label>
+              <select id="parcel-status" name="status" class="form-select">
+                <option value="Awaiting Pickup">Awaiting Pickup</option>
+                <option value="Collected">Collected</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="parcel-date" class="form-label"><strong>Date</strong></label>
+              <input type="date" id="parcel-date" name="date" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="parcel-time" class="form-label"><strong>Time</strong></label>
+              <input type="time" id="parcel-time" name="time" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    new DataTable('#tbl');
+
+    function openModal(id, sender, receiver, status, destination) {
+      document.getElementById('parcel-id').value = id;
+      document.getElementById('modal-id').textContent = id;
+      document.getElementById('modal-sender').textContent = sender;
+      document.getElementById('modal-receiver').textContent = receiver;
+      document.getElementById('modal-destination').textContent = destination;
+      document.getElementById('parcel-status').value = status;
+
+      // Set current date and time
+      const now = new Date();
+      document.getElementById('parcel-date').value = now.toISOString().split('T')[0];
+      document.getElementById('parcel-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Courier App - signup</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/users/signup.css">
+</head>
+<body>
+  <%- include('../partials/user-navbar') %>
+<div class="split-container">
+  <!-- Left Side (Logo + Animation) -->
+  <div class="left-side">
+    <!-- If you have an image logo, replace the text below with:
+         <img src="/images/logo.png" alt="Courier App Logo" style="max-width:150px;">
+    -->
+    <div class="logo">Courier App</div>
+    <p class="tagline">Fast • Reliable • Secure</p>
+  </div>
+
+  <!-- Right Side (Form) -->
+  <div class="right-side">
+    <div class="card login-card">
+      <h4 class="text-center mb-4">Signup</h4>
+      <form method="post" action="/signup">
+         <div class="form-group">
+          <label for="email">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Enter email</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+        </div>
+
+        <div class="text-right mb-3">
+        <a href="/login" class="login">Already have an account? Login</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Signup</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap 4 JS + dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcel Tracking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 20px;
+      width: 3px;
+      background: #dee2e6;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin: 20px 0;
+      padding-left: 50px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 5px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #0d6efd;
+      border: 3px solid #fff;
+      z-index: 1;
+    }
+
+    .timeline-item.completed::before {
+      background: #198754; /* green */
+    }
+
+    .timeline-item .status {
+      font-weight: 600;
+    }
+
+    .timeline-item small {
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/user-navbar') %>
+
+  <div class="container mt-5">
+    <h2 class="mb-4">Track Your Parcel</h2>
+
+    <% if (parcel) {
+      const status = parcel.CurrentStatus || '';
+      const steps = ["Collected", "In Transit", "Out for Delivery", "Delivered"];
+    %>
+
+    <!-- Parcel Details -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white">
+        <strong>Parcel Details</strong>
+      </div>
+      <div class="card-body">
+        <p><strong>Tracking ID:</strong> <%= parcel.id %></p>
+        <p><strong>Sender:</strong> <%= parcel.sender %></p>
+        <p><strong>Receiver:</strong> <%= parcel.receiver %></p>
+        <p><strong>Destination:</strong> <%= parcel.to %></p>
+      </div>
+    </div>
+
+    <!-- Tracking Timeline -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-light">
+        <strong>Status Progress</strong>
+      </div>
+      <div class="card-body">
+        <ul class="timeline">
+          <% steps.forEach(step => { %>
+            <li class="timeline-item <%= steps.indexOf(step) <= steps.indexOf(status) ? 'completed' : '' %>">
+              <div class="status">
+                <%= step %> 
+                <% if (step === status) { %>
+                  <span class="badge bg-success ms-2">Current</span>
+                <% } %>
+              </div>
+              <small>
+                <% if (step === "Collected") { %>Parcel has been picked up.step<% } %>
+                <% if (step === "In Transit") { %>Parcel is moving between hubs.<% } %>
+                <% if (step === "Out for Delivery") { %>Courier is on the way.<% } %>
+                <% if (step === "Delivered") { %>Parcel has been delivered.<% } %>
+              </small>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+
+    <% } else { %>
+      <div class="alert alert-warning">Parcel not found.</div>
+    <% } %>
+  </div>
+</body>
+</html>
