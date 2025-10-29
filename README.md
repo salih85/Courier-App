@@ -56,7 +56,23 @@ JWT_SECRET=<your_jwt_secret_key>
 
 ---
 
-## 📌 How to Run the Project
+
+## Project Setup
+
+```sh
+```
+
+### ▶️ How to Run the Project
+
+```sh
+npm install
+```
+
+### Run development server:
+
+```sh
+npm run dev
+```
 
 
 
