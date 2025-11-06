@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.static('static'));
 app.use(cookieParser());
 
- const connectDB = require('./confiq/db');
+ const connectDB = require('./config/db');
 
 const auth = require('./routes/auth');
 const common = require('./routes/common');
