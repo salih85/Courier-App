@@ -49,3 +49,44 @@
       font-size: 1.2rem;
       opacity: 0.9;
     }
+
+  
+@media (max-width: 900px) {
+
+  .split-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left-side {
+    flex: none;
+    padding: 40px 20px;
+  }
+
+  .right-side {
+    flex: none;
+    padding: 30px 20px;
+  }
+
+  .logo {
+    font-size: 2rem;
+    animation: none; /* smoother on mobile */
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .login-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .left-side {
+    display: none;
+  }
+}

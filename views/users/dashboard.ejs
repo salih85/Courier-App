@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>User Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -7,88 +8,158 @@
     body {
       background: #f8f9fa;
     }
+
     .parcel-card {
       border-left: 4px solid #007bff;
       transition: 0.2s;
     }
+
     .parcel-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
     }
+
     .tracking-id {
       font-size: 1.2rem;
       font-weight: bold;
       color: green;
     }
+
+    @media (max-width: 768px) {
+
+      h3 {
+        font-size: 1.3rem;
+        text-align: center;
+      }
+
+      .nav-tabs {
+        justify-content: center;
+      }
+
+      .nav-tabs .nav-link {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+
+      .card-title {
+        font-size: 1rem;
+      }
+
+      .tracking-id {
+        font-size: 1rem;
+      }
+
+      .parcel-card {
+        border-left: none;
+        border-top: 4px solid #007bff;
+      }
+
+      .parcel-card .btn {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .container {
+        margin-top: 20px !important;
+      }
+
+      .col-md-6 {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .parcel-card p strong {
+        display: block;
+      }
+    }
   </style>
 </head>
+
 <body>
- <%- include('../partials/user-navbar') %>
-  <div class="container mt-5">
-    <h3 class="mb-4">Welcome Back, <%= user.name %>!</h3>
+  <%- include('../partials/user-navbar') %>
+    <div class="container mt-5">
+      <h3 class="mb-4">Welcome Back, <%= user.name %>!</h3>
 
-    <!-- Tabs -->
-    <ul class="nav nav-tabs" id="parcelTabs" role="tablist">
-      <li class="nav-item">
-        <button class="nav-link active" id="sent-tab" data-bs-toggle="tab" data-bs-target="#sent" type="button">Sent Parcels</button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received" type="button">Received Parcels</button>
-      </li>
-    </ul>
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="parcelTabs" role="tablist">
+        <li class="nav-item">
+          <button class="nav-link active" id="sent-tab" data-bs-toggle="tab" data-bs-target="#sent" type="button">Sent
+            Parcels</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received"
+            type="button">Received Parcels</button>
+        </li>
+      </ul>
 
-    <div class="tab-content mt-3">
-      <!-- Sent Parcels -->
-      <div class="tab-pane fade show active" id="sent">
-        <% if (sentParcels.length === 0) { %>
-          <div class="alert alert-info">You haven’t sent any parcels yet.</div>
-        <% } else { %>
-          <div class="row">
-            <% sentParcels.forEach(parcel => { %>
-              <div class="col-md-6">
-                <div class="card parcel-card mb-3">
-                  <div class="card-body">
-                    <h5 class="card-title">Parcel to: <%= parcel.receiver.split('@')[0] %></h5>
-                    <p><strong>Tracking ID:</strong> <span class="tracking-id"><%= parcel.id %></span></p>
-                    <p><strong>Status:</strong><%= parcel.CurrentStatus %></p>
-                  <p><strong>Destination:</strong> <%= parcel.to %></p>
-               <a href="/track?id=<%= parcel.id %>" class="btn btn-success">Track</a>
+      <div class="tab-content mt-3">
+        <!-- Sent Parcels -->
+        <div class="tab-pane fade show active" id="sent">
+          <% if (sentParcels.length===0) { %>
+            <div class="alert alert-info">You haven’t sent any parcels yet.</div>
+            <% } else { %>
+              <div class="row">
+                <% sentParcels.forEach(parcel=> { %>
+                  <div class="col-md-6">
+                    <div class="card parcel-card mb-3">
+                      <div class="card-body">
+                        <h5 class="card-title">Parcel to: <%= parcel.receiver.split('@')[0] %>
+                        </h5>
+                        <p><strong>Tracking ID:</strong> <span class="tracking-id">
+                            <%= parcel.id %>
+                          </span></p>
+                        <p><strong>Status:</strong>
+                          <%= parcel.CurrentStatus %>
+                        </p>
+                        <p><strong>Destination:</strong>
+                          <%= parcel.to %>
+                        </p>
+                        <a href="/track?id=<%= parcel.id %>" class="btn btn-success">Track</a>
 
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  <% }) %>
               </div>
-            <% }) %>
-          </div>
-        <% } %>
-      </div>
+              <% } %>
+        </div>
 
-      <!-- Received Parcels -->
-      <div class="tab-pane fade" id="received">
-        <% if (receivedParcels.length === 0) { %>
-          <div class="alert alert-info">You haven’t received any parcels yet.</div>
-        <% } else { %>
-          <div class="row">
-            <% receivedParcels.forEach(parcel => { %>
-             <div class="col-md-6">
-                <div class="card parcel-card mb-3">
-                  <div class="card-body">
-                    <h5 class="card-title">Parcel from: <%= parcel.sender.split('@')[0] %></h5>
-                    <p><strong>Tracking ID:</strong> <span class="tracking-id"><%= parcel.id %></span></p>
-                    <p><strong>Status:</strong><%= parcel.CurrentStatus %></p>
-                  <p><strong>From:</strong> <%= parcel.from %></p>
-                <a href="/track?id=<%= parcel.id %>" class="btn btn-success">Track</a>
+        <!-- Received Parcels -->
+        <div class="tab-pane fade" id="received">
+          <% if (receivedParcels.length===0) { %>
+            <div class="alert alert-info">You haven’t received any parcels yet.</div>
+            <% } else { %>
+              <div class="row">
+                <% receivedParcels.forEach(parcel=> { %>
+                  <div class="col-md-6">
+                    <div class="card parcel-card mb-3">
+                      <div class="card-body">
+                        <h5 class="card-title">Parcel from: <%= parcel.sender.split('@')[0] %>
+                        </h5>
+                        <p><strong>Tracking ID:</strong> <span class="tracking-id">
+                            <%= parcel.id %>
+                          </span></p>
+                        <p><strong>Status:</strong>
+                          <%= parcel.CurrentStatus %>
+                        </p>
+                        <p><strong>From:</strong>
+                          <%= parcel.from %>
+                        </p>
+                        <a href="/track?id=<%= parcel.id %>" class="btn btn-success">Track</a>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  <% }) %>
               </div>
-            <% }) %>
-          </div>
-        <% } %>
+              <% } %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
+
 </html>
-
-
